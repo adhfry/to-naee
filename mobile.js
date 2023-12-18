@@ -53,7 +53,7 @@ class Paper {
       }
     })
 
-    paper.addEventListener('touchstart', (e) => {
+    paper.addEventListener('pointerdown', (e) => {
       if(this.holdingPaper) return; 
       this.holdingPaper = true;
       
@@ -65,7 +65,7 @@ class Paper {
       this.prevTouchX = this.touchStartX;
       this.prevTouchY = this.touchStartY;
     });
-    paper.addEventListener('touchend', () => {
+    paper.addEventListener('pointerup', () => {
       this.holdingPaper = false;
       this.rotating = false;
     });
