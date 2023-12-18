@@ -16,7 +16,7 @@ class Paper {
   rotating = false;
 
   init(paper) {
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('pointermove', (e) => {
       if(!this.rotating) {
         this.mouseX = e.clientX;
         this.mouseY = e.clientY;
