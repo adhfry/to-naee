@@ -50,7 +50,7 @@ class Paper {
       }
     })
 
-    paper.addEventListener('mousedown', (e) => {
+    paper.addEventListener('pointerdown', (e) => {
       if(this.holdingPaper) return; 
       this.holdingPaper = true;
       
@@ -67,7 +67,7 @@ class Paper {
         this.rotating = true;
       }
     });
-    window.addEventListener('mouseup', () => {
+    window.addEventListener('pointerup', () => {
       this.holdingPaper = false;
       this.rotating = false;
     });
