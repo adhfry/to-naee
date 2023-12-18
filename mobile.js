@@ -18,7 +18,7 @@ class Paper {
   rotating = false;
 
   init(paper) {
-    paper.addEventListener('touchmove', (e) => {
+    paper.addEventListener('pointermove', (e) => {
       e.preventDefault();
       if(!this.rotating) {
         this.touchMoveX = e.touches[0].clientX;
