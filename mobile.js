@@ -4,10 +4,6 @@ class Paper {
   touchStartY = 0;
   touchMoveX = 0;
   touchMoveY = 0;
-  touchEndX = 0;
-  touchEndY = 0;
-  prevTouchX = 0;
-  prevTouchY = 0;
   rotation = Math.random() * 30 - 15;
   currentPaperX = 0;
   currentPaperY = 0;
@@ -17,32 +13,30 @@ class Paper {
     paper.addEventListener('pointermove', (e) => {
       e.preventDefault();
 
-      if (!this.rotating) {
+      if (this.holdingPaper) {
         this.touchMoveX = e.clientX;
         this.touchMoveY = e.clientY;
 
-        this.velX = this.touchMoveX - this.prevTouchX;
-        this.velY = this.touchMoveY - this.prevTouchY;
+        const deltaX = this.touchMoveX - this.touchStartX;
+        const deltaY = this.touchMoveY - this.touchStartY;
 
-        if (this.holdingPaper) {
-          this.currentPaperX += this.velX;
-          this.currentPaperY += this.velY;
+        this.currentPaperX += deltaX;
+        this.currentPaperY += deltaY;
 
-          const maxX = window.innerWidth - paper.clientWidth;
-          const maxY = window.innerHeight - paper.clientHeight;
+        const maxX = window.innerWidth - paper.clientWidth;
+        const maxY = window.innerHeight - paper.clientHeight;
 
-          this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
-          this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
+        this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
+        this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
 
-          // Gunakan requestAnimationFrame untuk animasi yang lebih mulus
-          requestAnimationFrame(() => {
-            paper.style.transform = `translate3d(${this.currentPaperX}px, ${this.currentPaperY}px, 0) rotateZ(${this.rotation}deg)`;
-          });
-        }
+        this.touchStartX = this.touchMoveX;
+        this.touchStartY = this.touchMoveY;
+
+        // Gunakan requestAnimationFrame untuk animasi yang lebih mulus
+        requestAnimationFrame(() => {
+          paper.style.transform = `translate3d(${this.currentPaperX}px, ${this.currentPaperY}px, 0) rotateZ(${this.rotation}deg)`;
+        });
       }
-
-      this.prevTouchX = this.touchMoveX;
-      this.prevTouchY = this.touchMoveY;
     });
 
     paper.addEventListener('pointerdown', (e) => {
@@ -52,8 +46,6 @@ class Paper {
       paper.style.zIndex = "999"; // Menaikkan zIndex agar lebih tinggi
       this.touchStartX = e.clientX;
       this.touchStartY = e.clientY;
-      this.prevTouchX = this.touchStartX;
-      this.prevTouchY = this.touchStartY;
     });
 
     paper.addEventListener('pointerup', () => {
