@@ -33,16 +33,17 @@ class Paper {
         if (!this.rotating) {
           this.currentPaperX += this.velX;
           this.currentPaperY += this.velY;
+
+          // Atur batasan agar kertas tetap berada di dalam area tertentu
+          const maxX = window.innerWidth - paper.clientWidth;
+          const maxY = window.innerHeight - paper.clientHeight;
+
+          this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
+          this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
         }
+        
         this.prevTouchX = this.touchMoveX;
         this.prevTouchY = this.touchMoveY;
-
-        // Atur batasan agar kertas tetap berada di dalam area tertentu
-        const maxX = window.innerWidth - paper.clientWidth;
-        const maxY = window.innerHeight - paper.clientHeight;
-
-        this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
-        this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
 
         paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
       }
