@@ -16,7 +16,7 @@ class Paper {
   rotating = false;
 
   init(paper) {
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('pointermove', (e) => {
       if(!this.rotating) {
         this.mouseX = e.clientX;
         this.mouseY = e.clientY;
@@ -50,7 +50,7 @@ class Paper {
       }
     })
 
-    paper.addEventListener('mousedown', (e) => {
+    paper.addEventListener('pointerdown', (e) => {
       if(this.holdingPaper) return; 
       this.holdingPaper = true;
       
@@ -67,7 +67,7 @@ class Paper {
         this.rotating = true;
       }
     });
-    window.addEventListener('mouseup', () => {
+    window.addEventListener('pointerup', () => {
       this.holdingPaper = false;
       this.rotating = false;
     });
