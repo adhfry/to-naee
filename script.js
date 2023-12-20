@@ -1,13 +1,13 @@
-let highestZ = 1;
-
 class Paper {
   holdingPaper = false;
-  mouseTouchX = 0;
-  mouseTouchY = 0;
-  mouseX = 0;
-  mouseY = 0;
-  prevMouseX = 0;
-  prevMouseY = 0;
+  touchStartX = 0;
+  touchStartY = 0;
+  touchMoveX = 0;
+  touchMoveY = 0;
+  touchEndX = 0;
+  touchEndY = 0;
+  prevTouchX = 0;
+  prevTouchY = 0;
   velX = 0;
   velY = 0;
   rotation = Math.random() * 30 - 15;
@@ -20,7 +20,7 @@ class Paper {
       e.preventDefault();
 
       if (!this.rotating) {
-        this.touchMoveX = e.clientX;  // Gunakan e.clientX untuk mengakses posisi mouse atau pointer
+        this.touchMoveX = e.clientX;
         this.touchMoveY = e.clientY;
 
         this.velX = this.touchMoveX - this.prevTouchX;
@@ -32,40 +32,42 @@ class Paper {
           this.currentPaperX += this.velX;
           this.currentPaperY += this.velY;
 
-          // Atur batasan agar kertas tetap berada di dalam area tertentu
           const maxX = window.innerWidth - paper.clientWidth;
           const maxY = window.innerHeight - paper.clientHeight;
 
           this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
           this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
         }
-        
+
         this.prevTouchX = this.touchMoveX;
         this.prevTouchY = this.touchMoveY;
 
         paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
       }
     });
-    
+
     paper.addEventListener('pointerdown', (e) => {
-      if(this.holdingPaper) return; 
+      if (this.holdingPaper) return;
       this.holdingPaper = true;
-      
-      paper.style.zIndex = highestZ;
-      highestZ += 1;
-      
-      if(e.button === 0) {
-        this.mouseTouchX = this.mouseX;
-        this.mouseTouchY = this.mouseY;
-        this.prevMouseX = this.mouseX;
-        this.prevMouseY = this.mouseY;
-      }
-      if(e.button === 2) {
-        this.rotating = true;
-      }
+
+      paper.style.zIndex = "999"; // Menaikkan zIndex agar lebih tinggi
+      this.touchStartX = e.clientX;
+      this.touchStartY = e.clientY;
+      this.prevTouchX = this.touchStartX;
+      this.prevTouchY = this.touchStartY;
     });
-    window.addEventListener('pointerup', () => {
+
+    paper.addEventListener('pointerup', () => {
       this.holdingPaper = false;
+      this.rotating = false;
+    });
+
+    paper.addEventListener('gesturestart', (e) => {
+      e.preventDefault();
+      this.rotating = true;
+    });
+
+    paper.addEventListener('gestureend', () => {
       this.rotating = false;
     });
   }
