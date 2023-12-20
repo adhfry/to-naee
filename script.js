@@ -37,12 +37,15 @@ class Paper {
 
           this.currentPaperX = Math.max(0, Math.min(this.currentPaperX, maxX));
           this.currentPaperY = Math.max(0, Math.min(this.currentPaperY, maxY));
+
+          // Gunakan requestAnimationFrame untuk animasi yang lebih mulus
+          requestAnimationFrame(() => {
+            paper.style.transform = `translate3d(${this.currentPaperX}px, ${this.currentPaperY}px, 0) rotateZ(${this.rotation}deg)`;
+          });
         }
 
         this.prevTouchX = this.touchMoveX;
         this.prevTouchY = this.touchMoveY;
-
-        paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
       }
     });
 
